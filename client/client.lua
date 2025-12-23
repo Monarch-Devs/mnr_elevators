@@ -47,7 +47,17 @@ local function createElevator(name, label, floors)
                 DoScreenFadeOut(1000)
                 Wait(2000)
 
-                local zone = floor.zones[playerZone] or floor.zones[1]
+                local zone = floor.zones[playerZone]
+                if not zone then
+                    local availableIndex = next(floor.zones)
+                    if availableIndex then
+                        zone = floor.zones[availableIndex]
+                    else
+                        DoScreenFadeIn(1000)
+                        return
+                    end
+                end
+
                 SetEntityCoords(cache.ped, zone.coords.x, zone.coords.y, zone.coords.z, false, false, false, false)
                 SetEntityHeading(cache.ped, zone.coords.w)
 
